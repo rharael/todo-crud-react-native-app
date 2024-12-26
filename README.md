@@ -1,0 +1,1 @@
+This project is a task manager application (to-do app), created with a focus on providing users with a seamless task management experience. The application was built using modern technologies and follows best practices in front-end development, API integration, and testing.
