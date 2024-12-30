@@ -53,7 +53,7 @@ const Form = styled(View)`
 `;
 
 const Input = styled(TextInput).attrs(({ theme }) => ({
-  placeholderTextColor: theme.colors.gray600,
+  placeholderTextColor: theme.colors.gray500,
 }))`
   height: 52px;
   border-radius: 8px;
