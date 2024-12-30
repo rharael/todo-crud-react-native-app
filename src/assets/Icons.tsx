@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { Path } from "react-native-svg";
+import Svg, { SvgProps, G, Path, Defs, ClipPath } from "react-native-svg";
 
 interface IconProps {
   width?: number;
@@ -74,20 +74,21 @@ const LogoBrand: React.FC<IconProps> = ({ width = 210, height = 72 }) => (
 // login
 const Eye: React.FC<IconProps> = ({ width = 24, height = 24, color = '#F3F3F3' }) => (
   <Svg width={width} height={height} viewBox="0 0 22 22" fill="none">
-    <Path
-      d="M0.916748 8.99996C0.916748 8.99996 4.58341 1.66663 11.0001 1.66663C17.4167 1.66663 21.0834 8.99996 21.0834 8.99996C21.0834 8.99996 17.4167 16.3333 11.0001 16.3333C4.58341 16.3333 0.916748 8.99996 0.916748 8.99996Z"
-      stroke={color}
-      strokeWidth={2}
+<G
+      stroke="#F3F3F3"
       strokeLinecap="round"
       strokeLinejoin="round"
-    />
-    <Path
-      d="M11.0001 11.75C12.5189 11.75 13.7501 10.5187 13.7501 8.99996C13.7501 7.48118 12.5189 6.24996 11.0001 6.24996C9.4813 6.24996 8.25008 7.48118 8.25008 8.99996C8.25008 10.5187 9.4813 11.75 11.0001 11.75Z"
-      stroke={color}
       strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+      clipPath="url(#a)"
+    >
+      <Path d="M.917 11S4.583 3.667 11 3.667 21.083 11 21.083 11 17.417 18.333 11 18.333.917 11 .917 11Z" />
+      <Path d="M11 13.75a2.75 2.75 0 1 0 0-5.5 2.75 2.75 0 0 0 0 5.5Z" />
+    </G>
+    <Defs>
+      <ClipPath id="a">
+        <Path fill="#fff" d="M0 0h22v22H0z" />
+      </ClipPath>
+    </Defs>
   </Svg>
 );
 

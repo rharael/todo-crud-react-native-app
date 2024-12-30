@@ -51,8 +51,8 @@ const theme: Theme = {
   },
   fonts: {
     regular: 'Inter_400Regular',
-    semibold: 'Inter_600SemiBold',
-    bold: 'Inter_700Bold',
+    semibold: 'Inter_700Bold',
+    bold: 'Inter_600SemiBold',
   },
   fontSizes: {
     sm: 12,
