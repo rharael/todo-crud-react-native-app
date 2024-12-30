@@ -14,7 +14,7 @@ export default function Home() {
         <InputContainer>
           <Input placeholder="Pesquisar tarefa" />
           <Button>
-            <Icons.Search />
+            <Icons.Search height={25} width={25}/>
           </Button>
         </InputContainer>
         <LoadingContainer>
@@ -32,7 +32,7 @@ const Container = styled.View`
 const Content = styled.View`
   flex: 1;
   width: 100%;
-  padding-horizontal: 20;
+  padding-horizontal: 20px;
 `;
 
 const InputContainer = styled.View`
@@ -64,7 +64,6 @@ const Button = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.colors.purpleDark};
-  
 `;
 
 const LoadingContainer = styled.View`

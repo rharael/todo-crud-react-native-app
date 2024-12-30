@@ -73,7 +73,7 @@ const PasswordWrapper = styled(View)`
 `;
 
 const PasswordInput = styled(TextInput).attrs(({ theme }) => ({
-  placeholderTextColor: theme.colors.gray600,
+  placeholderTextColor: theme.colors.gray500,
 }))`
   flex: 1;
   height: 52px;

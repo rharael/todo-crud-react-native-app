@@ -17,8 +17,7 @@ export function Header() {
 
 const Container = styled.View`
   width: 100%;
-  padding-vertical: 52px;
-  padding: 52px 15px;
+  padding: 52px 12px;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.gray300};
 `;
