@@ -9,8 +9,8 @@ const Loading = ({}) =>{
   useEffect(()=>{
     const spin = Animated.loop(
       Animated.timing(rotateAnim, {
-        toValue: 1,
-        duration: 1000,
+        toValue: 2,
+        duration: 1500,
         useNativeDriver: true,
       })
     );
@@ -18,7 +18,7 @@ const Loading = ({}) =>{
     return () => spin.stop();
   },[rotateAnim]);
   const spinInterpolate = rotateAnim.interpolate({
-    inputRange: [0, 1],
+    inputRange: [0, 2],
     outputRange: ['0deg', '360deg'],
   });
 

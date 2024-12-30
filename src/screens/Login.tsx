@@ -2,10 +2,17 @@ import React, {useState} from 'react';
 import { View, TextInput, Button, Text, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import Icons from '../assets/Icons';
+import { AuthNavigatorRoutesProps } from '../routes/auth.routes';
+import { useNavigation } from '@react-navigation/native';
 
 
 const LoginScreen = () => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const navigator = useNavigation<AuthNavigatorRoutesProps>()
+
+    function handleLogin(){
+      navigator.navigate("Home")
+    }
 
   return (
     <Container>
@@ -20,7 +27,7 @@ const LoginScreen = () => {
           {isPasswordVisible ? <Icons.EyeClosed /> : <Icons.Eye /> }
           </ToggleIcon>
         </PasswordWrapper>
-        <LoginButton>
+        <LoginButton onPress={handleLogin}>
           <ButtonText>Login</ButtonText>
         </LoginButton>
       </Form>
