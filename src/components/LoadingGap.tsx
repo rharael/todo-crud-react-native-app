@@ -1,23 +1,30 @@
 import React, { useRef, useEffect } from "react";
-import { Animated, Easing } from 'react-native'
+import { Animated } from "react-native";
 import styled from "styled-components/native";
 import Icons from "../assets/Icons";
 
-const LoadingGap = ({}) =>{
+const Loading = () => {
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
-  useEffect(()=>{
-    const spin = Animated.loop(
-      Animated.timing(rotateAnim, {
-        toValue: 360,
-        duration: 1500,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
+  useEffect(() => {
+    const spin = Array.from({ length: 8 }).map((_, index) =>
+      Animated.sequence([
+        Animated.timing(rotateAnim, {
+          toValue: (index + 1) * 45,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+        Animated.delay(100),
+      ])
     );
-    spin.start();
-    return () => spin.stop();
-  },[rotateAnim]);
+
+    const loop = Animated.loop(Animated.sequence(spin));
+    loop.start();
+
+    return () => loop.stop();
+  }, [rotateAnim]);
+
+
   const spinInterpolate = rotateAnim.interpolate({
     inputRange: [0, 360],
     outputRange: ['0deg', '360deg'],
@@ -26,13 +33,13 @@ const LoadingGap = ({}) =>{
   return (
     <Container>
       <SpinnerContainer style={{ transform: [{ rotate: spinInterpolate }] }}>
-        <Icons.Spinner />
+        <Icons.SpinnerGap />
       </SpinnerContainer>
     </Container>
-  )
+  );
 };
 
-export default LoadingGap;
+export default Loading;
 
 const Container = styled.View`
   flex: 1;
