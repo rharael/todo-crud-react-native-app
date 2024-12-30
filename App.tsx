@@ -1,36 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Icons from './assets/icons';
+import { StyleSheet } from 'react-native';
+import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
+import { Routes } from './src/routes';
+import Loading from './src/components/Loading';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Home page!</Text>
-      <Icons.LogoRocket />
-      <Icons.LogoTodo />
-      <Icons.LogoBrand />
-      <Icons.ClipboardTextRegular />
-      <Icons.CircleRegular />
-      <Icons.CheckCircleFill />
-      <Icons.TrashRegular />
-      <Icons.PlusCircleRegular />
-      <Icons.Search />
-      <Icons.Spinner />
-      <Icons.SpinnerGap />
-      <Icons.Exit />
-      <Icons.Close />
-      <Icons.Eye />
-      <Icons.EyeClosed />
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_600SemiBold,
+    Inter_700Bold,
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (!fontsLoaded) {
+    return <Loading />;
+  }
+
+  return <Routes />;
+}
