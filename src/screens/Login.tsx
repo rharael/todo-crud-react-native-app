@@ -1,32 +1,82 @@
-import React, {useState} from 'react';
-import { View, TextInput, Button, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, Text, TouchableOpacity, TextInputProps } from 'react-native';
 import styled from 'styled-components/native';
 import Icons from '../assets/Icons';
 import { AuthNavigatorRoutesProps } from '../routes/auth.routes';
 import { useNavigation } from '@react-navigation/native';
+import axios, { AxiosError } from 'axios';
+
+
+interface CustomTextInputProps extends TextInputProps {
+  hasError?: boolean;
+}
 
 
 const LoginScreen = () => {
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const navigator = useNavigation<AuthNavigatorRoutesProps>()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [credentialError, setcredentialError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const navigator = useNavigation<AuthNavigatorRoutesProps>();
 
-    function handleLogin(){
-      navigator.navigate("Home")
+async function handleLogin() {
+  console.log("Tentativa Login")
+  setcredentialError(false);
+  setPasswordError(false);
+
+  try {
+    const response = await axios.post('http:localhost:3000/login', { username, password });
+    navigator.navigate('Home');
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      console.log('Erro Axios:', error);
+      if (error.response) {
+        const errorMessage = error.response.data.message;
+        console.log('Mensagem de erro:', errorMessage);
+        if (error.response && error.response.data) {
+          setcredentialError(true);
+          setPasswordError(true);
+        }
+      } else {
+        console.log('Erro sem resposta da API:', error.message);
+      }
+    } else {
+      console.log('Erro inesperado:', error);
     }
+  }
+}
 
   return (
     <Container>
       <IconHeader>
-        <Icons.LogoBrand height={40} width={110}/>
+        <Icons.LogoBrand height={40} width={110} />
       </IconHeader>
       <Form>
-        <Input placeholder="Username" />
-        <PasswordWrapper>
-          <PasswordInput placeholder="Password" secureTextEntry={!isPasswordVisible} />
-          <ToggleIcon onPress={()=>setIsPasswordVisible((visible)=>!visible)}>
-          {isPasswordVisible ? <Icons.EyeClosed /> : <Icons.Eye /> }
-          </ToggleIcon>
-        </PasswordWrapper>
+        <InputWrapper>
+          <Input
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+            hasError={credentialError}
+          />
+          {credentialError && <ErrorText>Username inválido</ErrorText>}
+        </InputWrapper>
+        <InputWrapper>
+          <PasswordWrapper>
+            <PasswordInput
+              placeholder="Password"
+              secureTextEntry={!isPasswordVisible}
+              value={password}
+              onChangeText={setPassword}
+              hasError={passwordError}
+            />
+            <ToggleIcon onPress={() => setIsPasswordVisible((visible) => !visible)}>
+              {isPasswordVisible ? <Icons.EyeClosed /> : <Icons.Eye />}
+            </ToggleIcon>
+          </PasswordWrapper>
+          {passwordError && <ErrorText>Senha inválida</ErrorText>}
+        </InputWrapper>
         <LoginButton onPress={handleLogin}>
           <ButtonText>Login</ButtonText>
         </LoginButton>
@@ -49,18 +99,22 @@ const IconHeader = styled(View)`
 const Form = styled(View)`
   width: 100%;
   max-width: 400px;
-  gap: 15px;
 `;
 
-const Input = styled(TextInput).attrs(({ theme }) => ({
+const InputWrapper = styled(View)`
+  width: 100%;
+  margin-vertical: 7px;
+`;
+
+const Input = styled(TextInput).attrs<CustomTextInputProps>(({ theme, hasError }) => ({
   placeholderTextColor: theme.colors.gray500,
 }))`
   height: 52px;
   border-radius: 8px;
   border-width: 2px;
   padding: 10px;
-  border-color: ${({ theme }) => theme.colors.gray300};
-  background-color: ${({theme}) => theme.colors.gray100};
+  border-color: ${({ theme, hasError }) => (hasError ? theme.colors.danger : theme.colors.gray300)};
+  background-color: ${({ theme }) => theme.colors.gray100};
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${({ theme }) => theme.fontSizes.lg}px;
 `;
@@ -72,15 +126,15 @@ const PasswordWrapper = styled(View)`
   height: 52px;
 `;
 
-const PasswordInput = styled(TextInput).attrs(({ theme }) => ({
+const PasswordInput = styled(TextInput).attrs<CustomTextInputProps>(({ theme, hasError }) => ({
   placeholderTextColor: theme.colors.gray500,
 }))`
   flex: 1;
   height: 52px;
   border-radius: 8px;
   border-width: 2px;
-  border-color: ${({ theme }) => theme.colors.gray300};
-  background-color: ${({theme}) => theme.colors.gray100};
+  border-color: ${({ theme, hasError }) => (hasError ? theme.colors.danger : theme.colors.gray300)};
+  background-color: ${({ theme }) => theme.colors.gray100};
   padding: 10px;
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${({ theme }) => theme.fontSizes.lg}px;
@@ -102,12 +156,22 @@ const LoginButton = styled(TouchableOpacity)`
   border-radius: 5px;
   justify-content: center;
   align-items: center;
+  margin-top: 7px;
 `;
 
 const ButtonText = styled(Text)`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${({ theme }) => theme.fontSizes.lg}px;
-  color: ${({theme}) => theme.colors.gray100};
+  color: ${({ theme }) => theme.colors.gray100};
+`;
+
+
+const ErrorText = styled(Text)`
+  color: ${({ theme }) => theme.colors.danger};
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-size: ${({ theme }) => theme.fontSizes.sm}px;
+  margin-top: 5px;
+  margin-bottom: -7px;
 `;
 
 export default LoginScreen;
