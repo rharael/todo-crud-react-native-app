@@ -34,6 +34,7 @@ const Content = styled.View`
   flex: 1;
   width: 100%;
   padding-horizontal: 20px;
+  background-color: ${({ theme }) => theme.colors.gray100};
 `;
 
 const InputContainer = styled.View`
