@@ -3,6 +3,7 @@ import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@e
 import { Routes } from './src/routes';
 import Loading from './src/components/Loading';
 import Theme from './src/Theme';
+import { TaskProvider } from './src/contexts/TaskContext';
 
 
 export default function App() {
@@ -10,7 +11,9 @@ export default function App() {
 
   return (
     <Theme>
+      <TaskProvider>
       {fontsLoaded ? <Routes /> : <Loading />}
+      </TaskProvider>
     </Theme>
   );
 }

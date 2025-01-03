@@ -17,16 +17,15 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [credentialError, setcredentialError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
   const navigator = useNavigation<AuthNavigatorRoutesProps>();
+  
 
 async function handleLogin() {
   console.log("Tentativa Login")
   setcredentialError(false);
-  setPasswordError(false);
 
   try {
-    const response = await axios.post('http:localhost:3000/login', { username, password });
+    const response = await axios.post(`http://192.168.1.5:3000/login`, { username, password });
     navigator.navigate('Home');
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -36,7 +35,6 @@ async function handleLogin() {
         console.log('Mensagem de erro:', errorMessage);
         if (error.response && error.response.data) {
           setcredentialError(true);
-          setPasswordError(true);
         }
       } else {
         console.log('Erro sem resposta da API:', error.message);
@@ -69,13 +67,13 @@ async function handleLogin() {
               secureTextEntry={!isPasswordVisible}
               value={password}
               onChangeText={setPassword}
-              hasError={passwordError}
+              hasError={credentialError}
             />
             <ToggleIcon onPress={() => setIsPasswordVisible((visible) => !visible)}>
               {isPasswordVisible ? <Icons.EyeClosed /> : <Icons.Eye />}
             </ToggleIcon>
           </PasswordWrapper>
-          {passwordError && <ErrorText>Senha inválida</ErrorText>}
+          {credentialError && <ErrorText>Senha inválida</ErrorText>}
         </InputWrapper>
         <LoginButton onPress={handleLogin}>
           <ButtonText>Login</ButtonText>
@@ -164,7 +162,6 @@ const ButtonText = styled(Text)`
   font-size: ${({ theme }) => theme.fontSizes.lg}px;
   color: ${({ theme }) => theme.colors.gray100};
 `;
-
 
 const ErrorText = styled(Text)`
   color: ${({ theme }) => theme.colors.danger};

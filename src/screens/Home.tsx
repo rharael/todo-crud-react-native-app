@@ -5,6 +5,7 @@ import Loading from '../components/Loading';
 import LoadingGap from '../components/LoadingGap';
 import { Header } from "../components/Header";
 import Icons from "../assets/Icons";
+import { TaskList } from "../components/Tasklist";
 
 export default function Home() {
   return (
@@ -18,7 +19,7 @@ export default function Home() {
           </Button>
         </InputContainer>
         <LoadingContainer>
-          <LoadingGap />
+          <TaskList />
         </LoadingContainer>
       </Content>
     </Container>
