@@ -14,6 +14,7 @@ interface TaskContextType {
   removeTask: (taskId: number) => void;
   toggleTaskCheck: (taskId: number, isChecked: boolean) => void;
   editTask: (taskId: number, task: string) => void;
+  error: string | null;
 }
 
 interface TaskProviderProps {
@@ -27,16 +28,24 @@ const defaultTaskContext: TaskContextType = {
   removeTask: () => {},
   toggleTaskCheck: () => {},
   editTask: () => {},
+  error: null
 };
 
 export const TaskContext = createContext<TaskContextType>(defaultTaskContext);
 
 export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchTasks = useCallback(async () => {
-    const data = await TaskService.getTasks();
-    setTasks(data);
+    try {
+      setError(null);
+      const data = await TaskService.getTasks();
+      setTasks(data);
+    } catch (err) {
+      console.error('Erro ao carregar tarefas:', err);
+      setError('Erro ao receber dados da API.');
+    }
   }, []);
 
   const addTask = useCallback(async (task: string) => {
@@ -77,7 +86,7 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   }, [fetchTasks]);
 
   return (
-    <TaskContext.Provider value={{ tasks, fetchTasks, addTask, removeTask, editTask, toggleTaskCheck }}>
+    <TaskContext.Provider value={{ tasks, fetchTasks, addTask, removeTask, editTask, toggleTaskCheck, error }}>
       {children}
     </TaskContext.Provider>
   );

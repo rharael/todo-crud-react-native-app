@@ -1,13 +1,23 @@
-import React from "react";
-import { View, Text, TextInput } from "react-native";
+import React, { useContext, useEffect } from "react";
+import { View, Text, TextInput, Modal } from "react-native";
 import styled from "styled-components/native";
 import Loading from '../components/Loading';
 import LoadingGap from '../components/LoadingGap';
 import { Header } from "../components/Header";
 import Icons from "../assets/Icons";
-import { TaskList } from "../components/Tasklist";
+import { TaskList } from "../components/TaskList";
+import { TaskContext } from "../contexts/TaskContext";
+import ErrorModal from "../components/ErrorModal";
+
 
 export default function Home() {
+  const { tasks, fetchTasks, error } = useContext(TaskContext);
+  const isLoading = tasks === null;
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+
   return (
     <Container>
       <Header />
@@ -15,11 +25,12 @@ export default function Home() {
         <InputContainer>
           <Input placeholder="Pesquisar tarefa" />
           <Button>
-            <Icons.Search height={25} width={25}/>
+            <Icons.Search height={25} width={25} />
           </Button>
         </InputContainer>
         <LoadingContainer>
-          <TaskList />
+          {isLoading ? <LoadingGap /> : <TaskList />}
+          <ErrorModal visible={!!error} errorMessage={error} onRetry={fetchTasks} />
         </LoadingContainer>
       </Content>
     </Container>
