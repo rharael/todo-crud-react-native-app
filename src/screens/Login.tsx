@@ -68,6 +68,7 @@ async function handleLogin() {
               value={password}
               onChangeText={setPassword}
               hasError={credentialError}
+              autoCapitalize="none"
             />
             <ToggleIcon onPress={() => setIsPasswordVisible((visible) => !visible)}>
               {isPasswordVisible ? <Icons.EyeClosed /> : <Icons.Eye />}
