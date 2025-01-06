@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { View, Text, TextInput, Modal } from "react-native";
 import styled from "styled-components/native";
-import Loading from '../components/Loading';
 import LoadingGap from '../components/LoadingGap';
 import { Header } from "../components/Header";
 import Icons from "../assets/Icons";
