@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useMemo } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { TaskContext } from "../contexts/TaskContext";
-
 import Icons from "../assets/Icons";
 
 interface Task {
@@ -96,7 +95,8 @@ const Empty = () => (
 const Container = styled.View`
   flex: 1;
   width: 100%;
-  padding-vertical: 20px;
+  padding-top: 20px;
+  padding-bottom: 30px;
 `;
 
 const HeaderContainer = styled.View`
@@ -185,11 +185,13 @@ const EmptyContainer = styled.View`
   padding-top: 30px;
   width: 100%;
   align-items: center;
+  border-top-width: 1px;
+  border-top-color: ${({ theme }) => theme.colors.gray300};
 `;
 
 const IconContainer = styled.View`
-  margin-bottom: 16px;
   width: 100%;
+  margin-bottom: 16px;
   align-items: center;
 `;
 

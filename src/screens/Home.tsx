@@ -1,17 +1,22 @@
-import React, { useContext, useEffect } from "react";
-import { View, Text, TextInput, Modal } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { TextInput } from "react-native";
 import styled from "styled-components/native";
+import { TaskContext } from "../contexts/TaskContext";
+import Icons from "../assets/Icons";
 import LoadingGap from '../components/LoadingGap';
 import { Header } from "../components/Header";
-import Icons from "../assets/Icons";
 import { TaskList } from "../components/TaskList";
-import { TaskContext } from "../contexts/TaskContext";
 import ErrorModal from "../components/ErrorModal";
+import CreateTask from "../components/CreateTask";
 
 
 export default function Home() {
-  const { tasks, fetchTasks, error } = useContext(TaskContext);
+  const { tasks, addTask, fetchTasks, error } = useContext(TaskContext);
   const isLoading = tasks === null;
+  const [isModalVisible, setModalVisible] = useState(false);
+  const handleAddTask = (newTask: string) => {
+    addTask(newTask)
+  }
 
   useEffect(() => {
     fetchTasks();
@@ -31,6 +36,15 @@ export default function Home() {
           {isLoading ? <LoadingGap /> : <TaskList />}
           <ErrorModal visible={!!error} errorMessage={error} onRetry={fetchTasks} />
         </LoadingContainer>
+        <CreateButton onPress={() => setModalVisible(true)}>
+          <CreateButtonText>Criar</CreateButtonText>
+          <Icons.PlusCircleRegular />
+        </CreateButton>
+        <CreateTask
+        visible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        onAddTask={handleAddTask}
+      />
       </Content>
     </Container>
   );
@@ -62,7 +76,7 @@ const Input = styled(TextInput).attrs(({ theme }) => ({
   height: 52px;
   border-radius: 8px;
   border-width: 2px;
-  padding: 16px;
+  padding: 13px;
   border-color: ${({ theme }) => theme.colors.gray300};
   background-color: ${({ theme }) => theme.colors.gray100};
   font-family: ${({ theme }) => theme.fonts.regular};
@@ -82,4 +96,25 @@ const LoadingContainer = styled.View`
   flex: 2;
   justify-content: center;
   align-items: center;
+`;
+
+const CreateButton = styled.TouchableOpacity`
+  flex-direction: row;
+  height: 60px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.purpleDark};
+  position: absolute;
+  top: 530px;
+  left: 260px;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  gap: 8px;
+`;
+
+const CreateButtonText = styled.Text`
+  color: ${({ theme }) => theme.colors.gray100};
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-size: ${({ theme }) => theme.fontSizes.lg}px;
 `;
