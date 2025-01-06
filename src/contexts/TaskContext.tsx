@@ -12,7 +12,7 @@ interface TaskContextType {
   fetchTasks: () => void;
   addTask: (task: string) => void;
   removeTask: (taskId: number) => void;
-  toggleTaskCheck: (taskId: number) => void;
+  toggleTaskCheck: (taskId: number, isChecked: boolean) => void;
   editTask: (taskId: number, task: string) => void;
 }
 
@@ -63,7 +63,8 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     );
   }, []);
 
-  const toggleTaskCheck = useCallback((taskId: number) => {
+  const toggleTaskCheck = useCallback(async (taskId: number, isChecked: boolean) => {
+    await TaskService.taskCheck(taskId, isChecked);
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === taskId ? { ...task, isChecked: !task.isChecked } : task

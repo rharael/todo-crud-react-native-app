@@ -50,11 +50,11 @@ export function TaskList() {
     <ItemContainer isChecked={item.isChecked} >
       <InfoContainer>
         {item.isChecked ? (
-          <Checkbox onPress={() => toggleTaskCheck(item.id)}>
+          <Checkbox onPress={() => toggleTaskCheck(item.id, false)}>
             <Icons.CheckCircleFill />
           </Checkbox>
         ) : (
-          <Checkbox onPress={() => toggleTaskCheck(item.id)}>
+          <Checkbox onPress={() => toggleTaskCheck(item.id, true)}>
             <Icons.CircleRegular />
           </Checkbox>
         )}
@@ -75,6 +75,8 @@ export function TaskList() {
         keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={<Empty />}
         contentContainerStyle={{ paddingBottom: 24 }}
+        showsVerticalScrollIndicator={false}
+        initialNumToRender={10}
       />
     </Container>
   );
@@ -163,6 +165,8 @@ const InfoContainer = styled.View`
 `;
 
 const Checkbox = styled.TouchableOpacity`
+  width: 28px;
+  height: 28px;
   align-items: center;
   justify-content: center;
   margin-right: 8px;
