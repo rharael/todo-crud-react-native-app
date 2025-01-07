@@ -18,6 +18,8 @@ This repository contains the TODO CRUD APP, an application developed with Expo R
 - Editing existing tasks.
 - Deleting tasks.
 
+[Video demonstration](https://youtu.be/3IS_vaEnJKw)
+
 ## API Structure
 
 The application consumes an API with the following structure:
@@ -73,12 +75,15 @@ The application consumes an API with the following structure:
    yarn install
    ```
 
-3. **Start the project with Expo**:
+4. **Change to Your preferable API url**:
+   - Change API url in both `./src/screens/Login.tsx` and `./src/services/TaskService.ts`.
+
+5. **Start the project with Expo**:
    ```bash
    yarn expo start
    ```
 
-4. **Test on a simulator or physical device**:
+6. **Test on a simulator or physical device**:
    - Use the QR Code in the terminal to open the app in the Expo Go app (available on the App Store/Google Play).
 
 ## License
