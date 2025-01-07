@@ -41,7 +41,12 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     try {
       setError(null);
       const data = await TaskService.getTasks();
-      setTasks(data);
+      const formattedTasks = data.map((task: any) => ({
+        id: task.id,
+        task: task.tarefa,
+        isChecked: !!task.status,
+      }));
+      setTasks(formattedTasks);
     } catch (err) {
       console.error('Erro ao carregar tarefas:', err);
       setError('Erro ao receber dados da API.');

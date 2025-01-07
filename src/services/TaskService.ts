@@ -1,18 +1,19 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://192.168.1.5:3000',
+  baseURL: 'http://localhost:8080',
 });
 
 export const TaskService = {
   getTasks: async () => {
-    const response = await api.get('/tasks');
+    const response = await api.get('/tarefas');
     return response.data.map((task: any) => ({
       id: task.id,
-      task: task.task,
-      isChecked: !!task.isChecked,
+      task: task.tarefa,
+      isChecked: !!task.status,
     }));
   },
+  
 
   createTask: async (task: string) => {
     const response = await api.post('/tasks', { task });

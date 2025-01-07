@@ -13,22 +13,23 @@ const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [credentialError, setcredentialError] = useState(false);
+  const [credentialError, setCredentialError] = useState(false);
   const { login } = useAuth();
 
   
   async function handleLogin() {
-    setcredentialError(false);
+    setCredentialError(false);
     console.log('Tentativa de Login');
 
     try {
-      const response = await axios.post('http://192.168.1.5:3000/login', { username, password });
+      const response = await axios.post('http://192.168.1.5:8080/login', { username, password });
       if (response.status === 200) {
-        await login();
+        const { accessToken } = response.data;
+        await login(accessToken);
       }
     } catch (error) {
       console.error('Erro ao realizar login:', error);
-      setcredentialError(true);
+      setCredentialError(true);
     }
   }
 
@@ -61,6 +62,7 @@ const LoginScreen = () => {
               {isPasswordVisible ? <Icons.EyeClosed /> : <Icons.Eye />}
             </ToggleIcon>
           </PasswordWrapper>
+          {credentialError && <ErrorText>Username ou senha inválidos</ErrorText>}
         </InputWrapper>
         <LoginButton onPress={handleLogin}>
           <ButtonText>Login</ButtonText>
