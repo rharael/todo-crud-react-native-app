@@ -105,8 +105,8 @@ const CreateButton = styled.TouchableOpacity`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.purpleDark};
   position: absolute;
-  top: 530px;
-  left: 260px;
+  top: 570px;
+  left: 256px;
   justify-content: center;
   align-items: center;
   z-index: 1;

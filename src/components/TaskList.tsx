@@ -47,20 +47,20 @@ export function TaskList() {
 
   const Item = ({ item }: { item: Task }) => (
     <ItemContainer isChecked={item.isChecked} >
+      {item.isChecked ? (
+        <Checkbox onPress={() => toggleTaskCheck(item.id, false)}>
+          <Icons.CheckCircleFill width={22} height={22} />
+        </Checkbox>
+      ) : (
+        <Checkbox onPress={() => toggleTaskCheck(item.id, true)}>
+          <Icons.CircleRegular width={22} height={22} />
+        </Checkbox>
+      )}
       <InfoContainer>
-        {item.isChecked ? (
-          <Checkbox onPress={() => toggleTaskCheck(item.id, false)}>
-            <Icons.CheckCircleFill />
-          </Checkbox>
-        ) : (
-          <Checkbox onPress={() => toggleTaskCheck(item.id, true)}>
-            <Icons.CircleRegular />
-          </Checkbox>
-        )}
-        <ItemText isChecked={item.isChecked}>{item.task}</ItemText>
+        <ItemText numberOfLines={4} ellipsizeMode="tail" isChecked={item.isChecked}>{item.task}</ItemText>
       </InfoContainer>
       <TouchableOpacity onPress={() => removeTask(item.id)}>
-        <Icons.TrashRegular />
+        <Icons.TrashRegular width={20} height={20} />
       </TouchableOpacity>
     </ItemContainer>
   );
@@ -75,7 +75,7 @@ export function TaskList() {
         ListEmptyComponent={<Empty />}
         contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
-        initialNumToRender={10}
+        initialNumToRender={15}
       />
     </Container>
   );
@@ -96,13 +96,14 @@ const Container = styled.View`
   flex: 1;
   width: 100%;
   padding-top: 20px;
-  padding-bottom: 30px;
+  padding-bottom: 65px;
 `;
 
 const HeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 18px;
 `;
 
 const Counter = styled.View`
@@ -150,29 +151,31 @@ const ConcludedValueCircle = styled.View`
 
 const ItemContainer = styled.View<{ isChecked: boolean }>`
   flex-direction: row;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   background-color: ${({ theme, isChecked }) => isChecked ? theme.colors.gray100 : theme.colors.gray300};
   border: 1px solid ${({ theme }) => theme.colors.gray400};
-  padding: 12px;
+  padding-vertical: 8px;
+  padding-horizontal: 10px;
   border-radius: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 `;
 
 const InfoContainer = styled.View`
   flex-direction: row;
-  align-items: center;
+  width: 255px;
+  align-items: start;
+  margin-left: -15px;
 `;
 
 const Checkbox = styled.TouchableOpacity`
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  min-height: 24px;
   align-items: center;
-  justify-content: center;
-  margin-right: 8px;
 `;
 
 const ItemText = styled.Text<{ isChecked: boolean }>`
+  margin-top: 2px;
   color: ${(props) =>
     props.isChecked ? props.theme.colors.gray500 : props.theme.colors.gray600};
   text-decoration-line: ${(props) =>

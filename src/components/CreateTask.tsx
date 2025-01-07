@@ -35,6 +35,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ visible, onClose, onAddTask }) 
               placeholder="Adicione uma nova tarefa"
               value={task}
               onChangeText={setTask}
+              multiline={true}
             />
             <AddButton
               active={!!task.trim()}
@@ -89,7 +90,7 @@ const TaskInput = styled(TextInput).attrs(({ theme }) => ({
   placeholderTextColor: theme.colors.gray500,
 }))`
   flex: 1;
-  height: 58px;
+  min-height: 58px;
   padding-vertical: 10px;
   padding-horizontal: 18px;
   background-color: ${({ theme }) => theme.colors.gray100};
