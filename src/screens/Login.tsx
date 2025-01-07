@@ -46,7 +46,7 @@ const LoginScreen = () => {
             onChangeText={setUsername}
             hasError={credentialError}
           />
-          {credentialError && <ErrorText>Username ou senha inválidos</ErrorText>}
+          {credentialError && <ErrorText>Username inválido</ErrorText>}
         </InputWrapper>
         <InputWrapper>
           <PasswordWrapper>
@@ -62,7 +62,7 @@ const LoginScreen = () => {
               {isPasswordVisible ? <Icons.EyeClosed /> : <Icons.Eye />}
             </ToggleIcon>
           </PasswordWrapper>
-          {credentialError && <ErrorText>Username ou senha inválidos</ErrorText>}
+          {credentialError && <ErrorText>Senha inválida</ErrorText>}
         </InputWrapper>
         <LoginButton onPress={handleLogin}>
           <ButtonText>Login</ButtonText>
