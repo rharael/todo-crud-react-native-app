@@ -23,7 +23,7 @@ const EditTask: React.FC<EditTaskProps> = ({ visible, task, onEditTask, onClose 
     if (task) {
       setTaskValue(task.task);
     }
-  }, [task]);
+  }, [visible]);
 
   const handleEditTask = () => {
     if (task && taskValue.trim()) {
