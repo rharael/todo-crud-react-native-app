@@ -13,7 +13,7 @@ import CreateTask from "../components/CreateTask";
 export default function Home() {
   const { tasks, addTask, fetchTasks, error } = useContext(TaskContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isCreateTaskVisible, setCreateTaskVisible] = useState(false);
   const handleAddTask = (newTask: string) => {
     addTask(newTask)
   }
@@ -22,7 +22,7 @@ export default function Home() {
     const loadTasks = async () => {
       setIsLoading(true);
       await fetchTasks();
-      setTimeout(()=>setIsLoading(false), 3000)
+      setTimeout(() => setIsLoading(false), 2500)
     };
 
     loadTasks();
@@ -42,15 +42,15 @@ export default function Home() {
           {isLoading ? <LoadingGap /> : <TaskList />}
           <ErrorModal visible={!!error} errorMessage={error} onRetry={fetchTasks} />
         </LoadingContainer>
-        <CreateButton onPress={() => setModalVisible(true)}>
+        <CreateButton onPress={() => setCreateTaskVisible(true)}>
           <CreateButtonText>Criar</CreateButtonText>
           <Icons.PlusCircleRegular />
         </CreateButton>
         <CreateTask
-        visible={isModalVisible}
-        onClose={() => setModalVisible(false)}
-        onAddTask={handleAddTask}
-      />
+          visible={isCreateTaskVisible}
+          onClose={() => setCreateTaskVisible(false)}
+          onAddTask={handleAddTask}
+        />
       </Content>
     </Container>
   );

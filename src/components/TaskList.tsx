@@ -1,8 +1,10 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { TaskContext } from "../contexts/TaskContext";
 import Icons from "../assets/Icons";
+import ShowTask from "./ShowTask";
+import EditTask from "./EditTask";
 
 interface Task {
   id: number;
@@ -11,11 +13,31 @@ interface Task {
 }
 
 export function TaskList() {
-  const { tasks, removeTask, toggleTaskCheck, fetchTasks } = useContext(TaskContext);
+  const { tasks, removeTask, toggleTaskCheck, fetchTasks, editTask } = useContext(TaskContext);
+  const [isShowTaskVisible, setShowTaskVisible] = useState(false);
+  const [isEditTaskVisible, setEditTaskVisible] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
+
+  const handleTrashPress = (task: Task) => {
+    setSelectedTask(task);
+    setShowTaskVisible(true);
+  };
+
+  const handleRemove = (id: number) => {
+    removeTask(id);
+    setShowTaskVisible(false);
+  };
+
+  const handleEdit = (task: Task | null) => {
+    console.log(task)
+    setShowTaskVisible(false);
+    setEditTaskVisible(true)
+  };
+
 
   const sortedTasks = useMemo(() => {
     return tasks.slice().sort((a, b) => Number(a.isChecked) - Number(b.isChecked));
@@ -59,7 +81,8 @@ export function TaskList() {
       <InfoContainer>
         <ItemText numberOfLines={4} ellipsizeMode="tail" isChecked={item.isChecked}>{item.task}</ItemText>
       </InfoContainer>
-      <TouchableOpacity onPress={() => removeTask(item.id)}>
+      {/* <TouchableOpacity onPress={() => removeTask(item.id)}> */}
+      <TouchableOpacity onPress={() => handleTrashPress(item)} >
         <Icons.TrashRegular width={20} height={20} />
       </TouchableOpacity>
     </ItemContainer>
@@ -76,6 +99,21 @@ export function TaskList() {
         contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
         initialNumToRender={15}
+      />
+      <ShowTask
+        visible={isShowTaskVisible}
+        onClose={() => setShowTaskVisible(false)}
+        task={selectedTask}
+        onEditTask={() => handleEdit(selectedTask)}
+        onRemoveTask={(id) => handleRemove(id)}
+      />
+      <EditTask
+        visible={isEditTaskVisible}
+        onClose={() => setEditTaskVisible(false)}
+        task={selectedTask}
+        onEditTask={(updatedTask) => {
+          editTask(updatedTask.id, updatedTask.task);
+        }}
       />
     </Container>
   );
@@ -182,6 +220,7 @@ const ItemText = styled.Text<{ isChecked: boolean }>`
     props.isChecked ? "line-through" : "none"};
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${({ theme }) => theme.fontSizes.sm}px;
+  line-height: 17px;
 `;
 
 const EmptyContainer = styled.View`
