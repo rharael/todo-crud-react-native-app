@@ -1,12 +1,13 @@
 import styled from "styled-components/native";
 import Icons from "../assets/Icons";
-
+import { useAuth } from '../contexts/AuthContext';
 
 export function Header() {
+  const { logout } = useAuth();
   return (
     <Container>
       <ButtonContainer>
-        <ButtonExit>
+        <ButtonExit onPress={()=>logout()}>
           <Icons.Exit />
         </ButtonExit>
       </ButtonContainer>

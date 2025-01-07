@@ -12,14 +12,20 @@ import CreateTask from "../components/CreateTask";
 
 export default function Home() {
   const { tasks, addTask, fetchTasks, error } = useContext(TaskContext);
-  const isLoading = tasks === null;
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
   const handleAddTask = (newTask: string) => {
     addTask(newTask)
   }
 
   useEffect(() => {
-    fetchTasks();
+    const loadTasks = async () => {
+      setIsLoading(true);
+      await fetchTasks();
+      setTimeout(()=>setIsLoading(false), 3000)
+    };
+
+    loadTasks();
   }, [fetchTasks]);
 
   return (

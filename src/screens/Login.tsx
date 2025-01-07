@@ -2,48 +2,35 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, TextInputProps } from 'react-native';
 import styled from 'styled-components/native';
 import Icons from '../assets/Icons';
-import { AuthNavigatorRoutesProps } from '../routes/auth.routes';
-import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../contexts/AuthContext';
 import axios, { AxiosError } from 'axios';
-
 
 interface CustomTextInputProps extends TextInputProps {
   hasError?: boolean;
 }
-
 
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [credentialError, setcredentialError] = useState(false);
-  const navigator = useNavigation<AuthNavigatorRoutesProps>();
+  const { login } = useAuth();
+
   
+  async function handleLogin() {
+    setcredentialError(false);
+    console.log('Tentativa de Login');
 
-async function handleLogin() {
-  console.log("Tentativa Login")
-  setcredentialError(false);
-
-  try {
-    const response = await axios.post(`http://192.168.1.5:3000/login`, { username, password });
-    navigator.navigate('Home');
-  } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      console.log('Erro Axios:', error);
-      if (error.response) {
-        const errorMessage = error.response.data.message;
-        console.log('Mensagem de erro:', errorMessage);
-        if (error.response && error.response.data) {
-          setcredentialError(true);
-        }
-      } else {
-        console.log('Erro sem resposta da API:', error.message);
+    try {
+      const response = await axios.post('http://192.168.1.5:3000/login', { username, password });
+      if (response.status === 200) {
+        await login();
       }
-    } else {
-      console.log('Erro inesperado:', error);
+    } catch (error) {
+      console.error('Erro ao realizar login:', error);
+      setcredentialError(true);
     }
   }
-}
 
   return (
     <Container>
@@ -58,7 +45,7 @@ async function handleLogin() {
             onChangeText={setUsername}
             hasError={credentialError}
           />
-          {credentialError && <ErrorText>Username inválido</ErrorText>}
+          {credentialError && <ErrorText>Username ou senha inválidos</ErrorText>}
         </InputWrapper>
         <InputWrapper>
           <PasswordWrapper>
@@ -70,11 +57,10 @@ async function handleLogin() {
               hasError={credentialError}
               autoCapitalize="none"
             />
-            <ToggleIcon onPress={() => setIsPasswordVisible((visible) => !visible)}>
+            <ToggleIcon onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
               {isPasswordVisible ? <Icons.EyeClosed /> : <Icons.Eye />}
             </ToggleIcon>
           </PasswordWrapper>
-          {credentialError && <ErrorText>Senha inválida</ErrorText>}
         </InputWrapper>
         <LoginButton onPress={handleLogin}>
           <ButtonText>Login</ButtonText>
@@ -91,6 +77,7 @@ const Container = styled(View)`
   background-color: ${({ theme }) => theme.colors.gray100};
   padding: 20px;
 `;
+
 const IconHeader = styled(View)`
   margin-bottom: 81px;
 `;

@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 import { Routes } from './src/routes';
 import Theme from './src/Theme';
-import { TaskProvider } from './src/contexts/TaskContext';
+import { AuthProvider } from './src/contexts/AuthContext';
 import * as SplashScreen from 'expo-splash-screen';
 
 export default function App() {
@@ -19,9 +19,9 @@ export default function App() {
 
   return (
     <Theme>
-      <TaskProvider>
+      <AuthProvider>
         {fontsLoaded ? <Routes /> : null}
-      </TaskProvider>
+      </AuthProvider>
       <StatusBar style="dark" />
     </Theme>
   );
